@@ -6,8 +6,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import config from './FIrebaseConfig.js'
 
-const firebaseConfig = config;
 // Initialize Firebase
+const firebaseConfig = config;
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 

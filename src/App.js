@@ -49,11 +49,23 @@ class App extends React.Component{
 		const {products}=this.state;
 		const index=products.indexOf(product);
 
-		products[index].qty+=1;
+		// products[index].qty+=1;
 
-		this.setState({
-			products:products
-		})
+		// this.setState({
+		// 	products:products
+		// })
+		const docRef=this.db.collection('products').doc(products[index].id);
+
+		docRef
+			.update({
+				qty: products[index].qty+1
+			})
+			.then(()=>{
+				console.log("Updated Sucessfully! +1");
+			})
+			.catch((error)=>{
+				console.log(error);
+			})
 	}
 	handelDecreaseQuantity=(product)=>{
 		const {products}=this.state;
@@ -61,20 +73,42 @@ class App extends React.Component{
 
 		if(products[index].qty === 0)
 			return;
-		products[index].qty-=1;
+		// products[index].qty-=1;
 
-		this.setState({
-			products:products
-		})
+		// this.setState({
+		// 	products:products
+		// })
+		const docRef=this.db.collection('products').doc(products[index].id);
+
+		docRef
+			.update({
+				qty: products[index].qty-1
+			})
+			.then(()=>{
+				console.log("Updated Sucessfully! -1");
+			})
+			.catch((error)=>{
+				console.log(error);
+			})
+
 	}
 	handelDeleteProduct=(id)=>{
-		const {products}= this.state;
+		// const {products}= this.state;
 
-		const items=products.filter((item)=> item.id !== id);
+		// const items=products.filter((item)=> item.id !== id);
 
-		this.setState({
-			products:items
-		})
+		// this.setState({
+		// 	products:items
+		// })
+		const docRef=this.db.collection('products').doc(id);
+		docRef
+			.delete()
+			.then(()=>{
+				console.log("Item Deleted Sucessfully!");
+			})
+			.catch((error)=>{
+				console.log(error);
+			})
 	}
 	getCartCount=()=>{
 		const {products}=this.state;
@@ -113,15 +147,15 @@ class App extends React.Component{
 		return (
 		<div className="App">
 			<Navbar
-			count={this.getCartCount()}
+				count={this.getCartCount()}
 			/>
-			<h1>Cart</h1>
-			<button style={{padding:20, fontSize:20}} onClick={this.addProduct}>Add Product</button>
+			{/* Add Product Button Disabled */}
+			{/* <button style={{padding:20, fontSize:20}} onClick={this.addProduct}>Add Product</button> */}
 			<Cart
-			products={products}
-			onIncreaseQuantity={this.handelIncreaseQuantity}
-			onDecreaseQuantity={this.handelDecreaseQuantity}
-			onDeleteProduct={this.handelDeleteProduct}
+				products={products}
+				onIncreaseQuantity={this.handelIncreaseQuantity}
+				onDecreaseQuantity={this.handelDecreaseQuantity}
+				onDeleteProduct={this.handelDeleteProduct}
 			/>
 			{loading && <h1>Loading Products...</h1>}
 			<div style={{fontSize:20, padding:10}}>Total: {this.getCartTotal()}</div>
