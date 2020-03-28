@@ -32,6 +32,10 @@ class App extends React.Component{
 		firebase
 			.firestore()
 			.collection('products')
+			//.where('price','>=',123) //for quaring data
+			//.where('title','==','Coffee Mug')
+			.orderBy('price',"asc") //in assending order of price
+			//.orderBy('price',"desc") //in descending order of price
 			.onSnapshot((snapshot)=>{//for real time
 				
 				const products=snapshot.docs.map((doc)=>{
@@ -112,11 +116,11 @@ class App extends React.Component{
 	}
 	getCartCount=()=>{
 		const {products}=this.state;
-		let count=0;
+		let num=0;
 		products.forEach((product)=>{
-			count+=product.qty;
+			num+=product.qty;
 		});
-		return count;
+		return num;
 	}
 	getCartTotal=()=>{
 		const {products}=this.state;
